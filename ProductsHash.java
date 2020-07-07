@@ -1,6 +1,8 @@
 package hit.co.il;
 import java.util.*;
 
+import hit.co.il.Enums.eProductType;
+
 
 public class ProductsHash
 {
@@ -13,7 +15,7 @@ public class ProductsHash
 	}
 
 	/**********************************MEDICAL********************************************/
-	//áãé÷ä àí äàéáø äøàùåï øé÷
+	//×‘×“×™×§×” ×× ×”××™×‘×¨ ×”×¨××©×•×Ÿ ×¨×™×§
 	public final boolean isEmpty()
 	{
 		return (productHashMap == null || (new Integer(productHashMap.size())).equals(0));
@@ -46,19 +48,18 @@ public class ProductsHash
 		productHashMap.put(key, value);
 	}
 
-
-	public final boolean remove(int key)
+	public void remove(int key)
 	{
-		return productHashMap.remove(key);
+		productHashMap.remove(key);
 	}
 
 
-	public final boolean IsProductExist(int catalogNumber)
+	public boolean IsProductExist(int catalogNumber)
 	{
 		return productHashMap.containsKey(catalogNumber);
 	}
 
-	public final Product GetProduct(int catalogNum)
+	public Product GetProduct(int catalogNum)
 	{
 		Product product;
 		if (productHashMap.containsKey(catalogNum))
@@ -73,7 +74,7 @@ public class ProductsHash
 		return product;
 	}
 
-	public final String ShowProductDetails(int catalogNum)
+	public String ShowProductDetails(int catalogNum)
 	{
 		if (!productHashMap.containsKey(catalogNum))
 		{
