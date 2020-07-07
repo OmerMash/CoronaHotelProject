@@ -25,9 +25,9 @@ public class Administration extends Product
 		return super.toString() + " , weight :" + weight;
 	}
 
-	public java.lang.Iterable<String> GetProductProperties()
+	public ArrayList<String> GetProductProperties()
 	{
-		ArrayList<String> productProperties = super.GetProductProperties().ToList();
+		ArrayList<String> productProperties = super.GetProductProperties();
 
 		productProperties.add(("What is the product weight?"));
 
