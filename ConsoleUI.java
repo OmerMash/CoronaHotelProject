@@ -1,4 +1,5 @@
 package hit.co.il;
+import java.io.IOException;
 import java.util.*;
 
 import hit.co.il.Enums.eProductType;
@@ -8,31 +9,33 @@ public class ConsoleUI
 {
 
 	private ProductsHash productsCollection = new ProductsHash();
-
+//לקראו מה אומר throws (קשור לtry and catch)
 	public final void MainProcess()
 	{
 		boolean userWantToExit = false;
-		char firstMenuChosen;
+		String firstMenuChosen;
 		do
 		{
-			firstMenuChosen = Character.Parse(firstMenu());
-			Runtime.getRuntime().exec("cls");
+			firstMenuChosen = firstMenu();
+			//Runtime.getRuntime().exec("cls");
+			//need to do clear to cli
+			
 			switch (firstMenuChosen)
 			{
-				case '1':
+				case "1":
 					insertNewProduct();
 					break;
-				case '2':
+				case "2":
 					showListOfProductsByType();
 					break;
-				case '3':
+				case "3":
 					changeAmountOfProduct();
 					break;
-				case '4':
+				case "4":
 					showCompleteDataOfProduct();
 					break;
 
-				case '8':
+				case "8":
 					userWantToExit = true;
 					break;
 			}
@@ -97,7 +100,7 @@ public class ConsoleUI
 	{
 		eProductType productType;
 
-		productType = eProductType.valueOf(this.String.valueOf(enumAskAndUserSelection<eProductType>("What is the product type?")));
+		productType =  eProductType.values()[ enumAskAndUserSelection(eProductType.class, "What is the product type?")];
 		return productType;
 	}
 
@@ -118,7 +121,7 @@ public class ConsoleUI
 			else
 			{
 				//get from user type of product to insert
-				productType = eProductType.valueOf(this.String.valueOf(enumAskAndUserSelection<eProductType>("What kind of product ? ")));
+				productType =  eProductType.values()[ enumAskAndUserSelection(eProductType.class, "What kind of product ? ")];
 
 				productsCollection.InsertNewProductModel(productType, productCatalogNum);
 				product = productsCollection.GetProduct(productCatalogNum);
@@ -132,22 +135,20 @@ public class ConsoleUI
 		}
 	}
 
-   private <TEnum extends IConvertible> int enumAskAndUserSelection(String i_StringToPrint)
+	//private int enumAskAndUserSelection<TEnum>(string i_StringToPrint) where TEnum : struct, IConvertible
+	private <E extends Enum<E>> int enumAskAndUserSelection (Class<E> enumType, String stringToPrint)
 	{
-		int i;
-		System.out.println(i_StringToPrint);
-		i = 1;
+        int i;
+        System.out.println(stringToPrint);
+        i = 1;
+//תלמדו על פוראיצ בגאווה זה חשוב אוקיי :))) פעם הבאה שתעני לי פה אני בא להביא לך סטירה לתוך הפנים  יופי, חיילת
+        for (E en : EnumSet.allOf(enumType))
+        {
+        	System.out.println(i + ". " + en);
+            i++;
+        }
 
-		for (TEnum val : TEnum.values())
-		{
-			//מה זה החרא הז 
-			//לזה אחד הדברים היותר דבילים שקיימים להשתמש בקונברטור הזה רק שתדעי
-			// זה מהתוכנה הזאת אני לא יודעת למה זה עשה לי את זה
-			System.out.printf("%1$s. %2$s" + "\r\n", i, val);
-			i++;
-		}
-
-		return askFromUserToChooseAndCheckHim(1, tangible.EnumHelper.getNames(TEnum.class).length);
+        return askFromUserToChooseAndCheckHim(1, enumType.getEnumConstants().length);
 	}
 
 	private void askForUniqueProperties(Product product)
@@ -191,7 +192,7 @@ public class ConsoleUI
 	"\r\n" + 
 	"2. Show list of products by type" + "\r\n" + 
 	"\r\n" + 
-	"3. Change the amount of a product" + "\r\n" + 
+	"3. Add the amount of a product" + "\r\n" + 
 	"\r\n" + 
 	"4. Show complete data of product" + "\r\n" + 
 	"\r\n" + 
@@ -262,6 +263,6 @@ public class ConsoleUI
 				return intMenuChosen;
 			}
 		}
-	}
+	
 
 
