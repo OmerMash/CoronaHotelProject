@@ -32,9 +32,9 @@ public class Medical extends Product
 
 	}
 
-	public java.lang.Iterable<String> GetProductProperties()
+	public ArrayList<String> GetProductProperties()
 	{
-		ArrayList<String> productProperties = super.GetProductProperties().ToList();
+		ArrayList<String> productProperties = super.GetProductProperties();
 
 		productProperties.add(("What is the product expirationDate?")); //amountOfProperties + 1 (number of question)
 
