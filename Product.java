@@ -1,64 +1,117 @@
-import java.util.Random;
+package hit.co.il;
 
-public class Product {
-
-	protected String productName ;	
-	protected int productCatalogNum;
+public abstract class Product
+{
+	protected static final int baseAmountOfProperties = 3;
+	protected String productName;
+	protected int productCatalogNum; //ID - Unique
 	protected int productQuantity;
 	protected int minimumQuantity;
-	
-	public Product firstLink;
-	
-	
-	Random r = new Random();//קריאה למספר רמנדומלי 
 
-	public Product(String productName,int productQuantity,int minimumQuantity) {
-		super();
-		this.productName = productName;
-		//this.productCatalogNum = productCatalogNum;
-		this.productQuantity = productQuantity;
-		this.minimumQuantity = minimumQuantity;
-		//firstLink = null;
-	
-		getRandomCtalogNUM();
-		
+
+	public Product(int productCatalogNum)
+	{
+		this.productCatalogNum = productCatalogNum;
 	}
 
-	
+
+
 	/********GETTERS & SETTERS**********/
-	public String getProductName() {
+	public final String getProductName()
+	{
 		return productName;
 	}
 
-	public void setProductName(String productName) {
+	public final void setProductName(String productName)
+	{
 		this.productName = productName;
 	}
 
-	public int getProductQuantity() {
+	public final int getProductQuantity()
+	{
 		return productQuantity;
 	}
 
-	public void setProductQuantity(int productQuantity) {
+	public final void setProductQuantity(int productQuantity)
+	{
 		this.productQuantity = productQuantity;
 	}
-	public int getprodutCatalogNum() {
-		return productCatalogNum;
+
+
+
+
+	public void PrintProduct()
+	{
+		System.out.println("name :" + productName + " , quantity=" + productQuantity + " , minimum quantity=" + minimumQuantity + " , catalog number : " + productCatalogNum);
 	}
-	/***********************************/
-	
-	
-	//פונקציה שנותת מספר ראנדומלי למק"ט המוצר
-	protected int getRandomCtalogNUM() {
-		productCatalogNum=r.nextInt(999)+999;	
-		return productCatalogNum;
+
+	public String toString()
+	{
+		return ("name :" + productName + " , quantity=" + productQuantity + " , minimum quantity=" + minimumQuantity + " , catalog number : " + productCatalogNum);
 	}
-	
-/***********************************************************************************/
-	
-	
+	/***********************************************************************************/
 
+	public java.lang.Iterable<String> GetProductProperties()
+	{
+		ArrayList<String> productProperties = new ArrayList<String>();
 
-	
-	
+		productProperties.add(("What is the product name?")); //1 (first question)
+		productProperties.add(("What is the product current Quantity")); //2
+		productProperties.add(("What is the product minimum Quantity")); //3
 
+		return productProperties;
+	}
+
+	public boolean SetProductProperties(String userInput, int i_IndexToSet)
+	{
+		boolean goodInput = false;
+		int integerInput;
+		switch (i_IndexToSet)
+		{
+			case 1:
+					this.productName = userInput;
+					goodInput = true;
+
+				break;
+
+			case 2:
+				tangible.OutObject<Integer> tempOut_integerInput = new tangible.OutObject<Integer>();
+				goodInput = tangible.TryParseHelper.tryParseInt(userInput, tempOut_integerInput);
+			integerInput = tempOut_integerInput.outArgValue;
+				if (goodInput && integerInput >= 0)
+				{
+					productQuantity = integerInput;
+					goodInput = true;
+				}
+				else
+				{
+					goodInput = false;
+				}
+
+				break;
+			//amountOfProperties must be the last, needs change when adding more properties 
+			//created for loosly couple between son and base
+			case baseAmountOfProperties:
+				tangible.OutObject<Integer> tempOut_integerInput2 = new tangible.OutObject<Integer>();
+				goodInput = tangible.TryParseHelper.tryParseInt(userInput, tempOut_integerInput2);
+			integerInput = tempOut_integerInput2.outArgValue;
+				if (goodInput && integerInput >= 0)
+				{
+					minimumQuantity = integerInput;
+					goodInput = true;
+				}
+				else
+				{
+					goodInput = false;
+				}
+
+				break;
+
+			default:
+				break;
+		}
+
+		return goodInput;
+	}
 }
+
