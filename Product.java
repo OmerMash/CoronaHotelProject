@@ -1,5 +1,7 @@
 package hit.co.il;
 
+import java.util.ArrayList;
+
 public abstract class Product
 {
 	protected static final int baseAmountOfProperties = 3;
@@ -51,7 +53,7 @@ public abstract class Product
 	}
 	/***********************************************************************************/
 
-	public java.lang.Iterable<String> GetProductProperties()
+	public ArrayList<String> GetProductProperties()
 	{
 		ArrayList<String> productProperties = new ArrayList<String>();
 
