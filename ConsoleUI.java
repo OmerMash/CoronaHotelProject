@@ -1,6 +1,8 @@
 package hit.co.il;
 import java.util.*;
 
+import hit.co.il.Enums.eProductType;
+
 
 public class ConsoleUI
 {
@@ -138,6 +140,9 @@ public class ConsoleUI
 
 		for (TEnum val : TEnum.values())
 		{
+			//מה זה החרא הז 
+			//לזה אחד הדברים היותר דבילים שקיימים להשתמש בקונברטור הזה רק שתדעי
+			// זה מהתוכנה הזאת אני לא יודעת למה זה עשה לי את זה
 			System.out.printf("%1$s. %2$s" + "\r\n", i, val);
 			i++;
 		}
