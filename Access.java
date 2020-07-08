@@ -1,273 +1,122 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.util.concurrent.TimeUnit;
 
-public class Access extends Input{
-	
+public class Access{
+    
 	//Variables
-    protected static int userCount=1;
-    //protected static int numOfGuestsToCheckIn;
-    protected String userName;
-    protected String userID="User"+userCount;
-    protected String pass="000";
-    static String fileName = ("RESEPTION_ACCESS.txt") ;    //file name = source file name + _parsed.txt
-	static boolean existAccessFile = false;
-	String append_value;
-	boolean loggedIn=false;
-	static File file;
-	static FileChannel fileChannel;
-	static long fileSize;
-	static int userChose;
-
+	static String absolutePath;
+	static int successfullyRegistered; 
+	static int userLoggedIn=0;
+	static int tries;
+	static int existUsersAccessFile=0;
+	static int accessDecision=0;
 	
-    //Methods
-    //Ctor
-    public Access()
-    {
-    	userCount++;    	
-    }
-	
-    
-    
-    
-    
-	/*********************************************************************************************************************************************/
-    public static int userDecision()
-    {
-    	Reception.accessDecision = 0;
-    	while(Reception.accessDecision != 1 && Reception.accessDecision != 2)
-    	{
-    	//go to login scenario
-    	System.out.println();
-    	System.out.println("MENU");
-    	System.out.println("CHOOSE ACTION:");
-    	System.out.println();
-    	System.out.println();
-    	System.out.println("Login - 1");
-    	System.out.println("Register - 2");
-    	Reception.accessDecision  = Input.input.nextInt();
-    	if(Reception.accessDecision != 1 && Reception.accessDecision != 2)
-    		System.out.println("------> PLEASE CHOOSE ONLY 1 OR 2.");
-    	}
-    	return Reception.accessDecision;
-    }
-	/*********************************************************************************************************************************************/
 
-	/*********************************************************************************************************************************************/
-    public void AbsoluteFilePath() throws IOException
-    {
-    	Reception.absolutePath = file.getAbsolutePath();
-		System.out.println("File path : " + Reception.absolutePath);
+   //Ctor
+    public Access(){}    
+     
 
-		String filePath = Reception.absolutePath.
-			     substring(0,Reception.absolutePath.lastIndexOf(File.separator));
 
-		System.out.println("File path : " + filePath);
-	}
-	/*********************************************************************************************************************************************/
 
-	/*********************************************************************************************************************************************/
-    public boolean StringFinder(String user, String path) {
-    {
-        double count = 0,countBuffer=0,countLine=0;
-        
-        BufferedReader br;
-
-        String Thisline = "";
-
-        try {
-        	
-            br = new BufferedReader(new FileReader(path));
+	public static void main(String[] args) {
+		
+		System.out.println("                         *** Welcome to Corona Hotel Management System ***");
+		System.out.println();   
+			
+	    try {
+	           
+	    	Model user = new Model();
+	        	existUsersAccessFile = user.CreateAccessFile(); //go to create file function and create file for users access if it doesn't exist yet, return 1 if file is created. if file already exist return 0.
             
-            try {
-                while((Thisline = br.readLine()) != null)
-                {
-                    if (Thisline.equals(user))
-                    {
-                          br.close();
-                          return true;
-                    } 
-                }
-                br.close();
-                return false;
-                
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+	        //while user does not have access decision yet (didn't chose to login or register)    
+        	while(accessDecision == 0) 	
+        	{
+	            if(existUsersAccessFile == 1 && !user.AccessfileName.isEmpty() ) // if access file exist and it is not empty - then ask the user if he want's to login or register
+	            	user.userDecision();
+	            
+	            else // if file not exist or exist but empty - that means no users exist in access file - go to register scenario
+	            {
+	            	for(tries = 0 ; successfullyRegistered!=1 && tries < 3 ; tries++)
+	            	{
+	            		System.out.println("Please Register to Enter Reception");
+	            		successfullyRegistered = user.Register();
+	            		if(successfullyRegistered==1) {
+	            			accessDecision = 1;
+	            			break;
+	            		}
+	            		System.out.println("Failed to Register Please try again");
+            			System.out.println();
+	            	}
+	            	if(tries == 3) {
+	            		System.out.println("3 Failed password attempts detected, Starting registration again");
+	        			System.out.println();
+	        			TimeUnit.SECONDS.sleep(3);
+	        			accessDecision = 0;
+	            	}
+              	
+	        	}
+	        }
+        	
+        	while(true)
+        	{
+        		while(userLoggedIn != 1) {
+        			
+        		
+        		// associate user decision to the right flow (register / login) to be able to use the system
+            	switch(accessDecision)
+            	{
+            	case 1:
+            		//go to login scenario
+            		//boolean firstRound = true;
+            		//if (userLoggedIn == 2) firstRound = false; 
+            		//while(userLoggedIn !=1 ) {
+            			//if(firstRound == false)
+            				//userLoggedIn = user.userDecision();
+            			//if(userLoggedIn == 2) break;
+            			userLoggedIn = user.Login();
+            			accessDecision = userLoggedIn;
+            			//firstRound = false;
+            		//}
+            		if(userLoggedIn == 2) continue;
+            		break;
+            		
+            	case 2:
+            		//go to register scenario
+            		successfullyRegistered = user.Register();
+            		
+            		if(successfullyRegistered == 1 || successfullyRegistered == 3) {
+            			accessDecision = 3;
+            		}
+            		break;
+            	case 3:
+            		//go to decision scenario
+            		accessDecision = user.userDecision();
+            		break;
+            	}	
+            	
+        		}
+
+        		//taking control of the system after getting Access using Singleton instance.
+        		SingletonReception.mySingleton = SingletonReception.getMySingleton();
+        		SingletonReception.mySingleton.Controller(SingletonReception.mySingleton);
+        		
+            	}
+        	
+        	        	
         }
-    }
-	return false;
-    }
-	/*********************************************************************************************************************************************/
+	    
+	        
+        catch (Exception exc){
+            exc.printStackTrace();
+        }
 
-	/*********************************************************************************************************************************************/
-    public int CreateAccessFile() {
- 	    //creating text file to save user names + passwords 
- 	    file = new File(fileName);     //create the file.
- 	   try {
- 		   			
- 		   	if (file.createNewFile())
-			   {
- 		   		System.out.println("Debug info:");
-	         	System.out.println("* Access file created"); //means no access file existed before->software havn't been used yet->go to register flow
-	         	Reception.absolutePath = file.getAbsolutePath();
-	        	//get file path + get file size  
-	        	Path filePath = Paths.get(fileName);
-                fileChannel = FileChannel.open(filePath);
-                fileSize = fileChannel.size();
-                System.out.format("* Size: %d bytes", fileSize); //debug 
-	         	System.out.println("* Path: "+ Reception.absolutePath);
-	         	System.out.println();
-	     
-	         	return 0;
-			   }
-			else {
-				System.out.println("Debug info:");
-				System.out.println("* Access file Exist"); //means no access file existed before->software havn't been used yet->go to register flow
-	         	Reception.absolutePath = file.getAbsolutePath();
-	        	//get file path + get file size  
-	        	Path filePath = Paths.get(fileName);
-                fileChannel = FileChannel.open(filePath);
-                long fileSize = fileChannel.size();
-                System.out.format("* Size: %d bytes", fileSize); //debug 
-                System.out.println();
-	         	System.out.println("* Path: "+ Reception.absolutePath);
-	         	System.out.println();
-				return 1;
-			}
-		} 
- 	   
- 	   catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-		}
- 	   return 1;
- 	}
- 	/*********************************************************************************************************************************************/
- 	 
- 	/*********************************************************************************************************************************************/
- 	public int Register(Reception user) throws IOException
- 	{
- 		int passValidation=0;
- 		
- 		System.out.println("REGISTER");
- 		System.out.println();
- 		//get reception user name
- 		System.out.print("Please Enter Username: ");
- 		this.userName = input.next();
- 		
- 		//get reception user password + validate password
- 		for(int i=0 ; i<4 ; i++)
- 		{
- 			if (i==3) return 0;
- 			System.out.print("Please Enter Password: ");
- 			this.pass = input.next();
- 			System.out.print("Verify Password: ");
- 			String verifyPass = input.next();
- 			if(this.pass.equalsIgnoreCase(verifyPass)) {
- 				passValidation = 1;
- 				break;
- 			}
- 			else {
- 				System.out.println();
- 				System.out.println("Passwords does not match");
- 				System.out.println();
- 				System.out.println();
- 				continue;
- 			}
- 		}
- 		FileWriter writer = new FileWriter (fileName,true);
- 		writer.write(this.userName + "," + this.pass + ".");
- 		writer.write('\n');
-        //writer.append(this.userName + "," + this.pass + ".");
- 		writer.flush(); 
 
- 		System.out.println();
- 		System.out.println("User " + this.userName + " Registerd succesfully"  ); 		
- 		return(1);
- 	}
-	/*********************************************************************************************************************************************/
-
-	/*********************************************************************************************************************************************/	 
- 	public boolean foundUserInAccessFile(String user, String file) throws FileNotFoundException
- 	{
- 			String line;
- 			
- 			Scanner scanner = new Scanner(file);
- 			while (scanner.hasNextLine()) {
- 			    String nextToken = scanner.nextLine();
- 			    if (nextToken.equalsIgnoreCase(user))
- 			    	return true;
- 			}
- 			return false;
- 	}
-	/**
-	 * @throws FileNotFoundException *******************************************************************************************************************************************/	 
-
-	/*********************************************************************************************************************************************/
- 	public int Login(Reception user, String file) throws FileNotFoundException
- 	{
- 		String loginUserName, loginPassword, userDetails;
- 		
- 		while(loggedIn == false) {
- 			
- 			System.out.println("LOGIN" + '\n');
- 	 		System.out.println("Enter UserName: ");
- 	 		loginUserName = input.next();
- 	 		System.out.println("Enter Password: ");
- 	 		loginPassword = input.next(); 
- 	 		
- 	 		userDetails = loginUserName + "," + loginPassword + ".";
- 	 		
- 	 		if(StringFinder(userDetails, Reception.absolutePath))// need to find a way to parse the file to validate login details!
- 	 				{
- 	 					System.out.println();
- 	 					System.out.println();
- 	 					System.out.println("Logged in succesfully");
- 	 					loggedIn = true;
- 	 					return 1;
- 	 				}
- 	 		input.reset();
- 	 		System.out.println();
- 	 		System.out.println();
- 	 		System.out.println("PASSWORD OR USERNAME DID NOT MATCH");
- 	 		System.out.println();
- 	 		System.out.println("TRY AGAIN - 1");
- 	 		System.out.println("LEAVE - 0");
- 	 		userChose = input.nextInt();
- 	 		
- 	 		if(userChose == 0) {
- 	 			System.out.println("USER DID NOT LOGGED IN - GOING BACK TO ACCESS MENU");
- 	 			return 0;
- 	 		}
- 	 		else if(userChose == 1) continue;
- 	 			
- 	 		System.out.println("PLEASE CHOOSE ONLY 0 OR 1.");
- 	 		break;
- 		}
- 		
-		return 0;
- 		
- 	}
-	/*********************************************************************************************************************************************/
- 	
-	/*********************************************************************************************************************************************/
-	public void PrintUserDetails(Access userID) {
-		System.out.println("REGISTERED");
-		System.out.println("Please Enter Username: ");
-    	this.userID = input.next();
-    	this.pass = input.next();
 	}
-	/*********************************************************************************************************************************************/	
+		
 }
+
+  
+
+
+
+
+
