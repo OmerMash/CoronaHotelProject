@@ -53,7 +53,7 @@ public class Model{
 	static boolean existAccessFile = false;
 	String append_value;
 	boolean loggedIn=false;
-	static File file;
+	public File file;
 	static FileChannel fileChannel;
 	static long fileSize;
 	static int userChose;
