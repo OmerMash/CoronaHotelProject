@@ -44,7 +44,7 @@ public class SingletonReception
         		break;
         	//check out
         	case 3:
-        		model.GuestReservation(control);
+        		model.RoomReservation(control);
         		break;
         	//rooms
         	
