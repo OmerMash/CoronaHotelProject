@@ -4,7 +4,7 @@ import java.util.*;
 public class Food extends Product
 {
 
-	private String expirationDate; //Χ‘Χª Χ—Χ Χ”Χ™Χ™ΧªΧ™ ΧΧΧΧ™Χ¥ ΧΧ ΧΧ”Χ©ΧªΧΧ© Χ‘ΧΧ—ΧΧ§Χ” Χ©Χ™Χ•Χ“ΧΆΧª ΧΧ‘Χ¦ΧΆ ΧΧ Χ™Χ¤Χ•ΧΧ¦Χ™Χ•Χª ΧΆΧ ΧªΧΧ¨Χ™Χ (Date)
+	private String expirationDate; //αϊ ηο διιϊι ξξμιυ μκ μδωϊξω αξημχδ ωιεγςϊ μαφς ξπιτεμφιεϊ ςμ ϊΰψικ (Date)
 	private String kosherType;
 	private String dietType;
 
@@ -44,7 +44,7 @@ public class Food extends Product
 		}
 
 		boolean goodInput = false;
-		int integerInput;
+
 		switch (i_IndexToSet)
 		{
 			case baseAmountOfProperties + 1:

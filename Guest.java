@@ -1,3 +1,4 @@
+package hit.co.il;
 import java.util.Scanner;
 
 public class Guest{

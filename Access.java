@@ -1,3 +1,5 @@
+
+package hit.co.il;
 import java.util.concurrent.TimeUnit;
 
 public class Access{
@@ -113,10 +115,3 @@ public class Access{
 	}
 		
 }
-
-  
-
-
-
-
-

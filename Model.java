@@ -1,3 +1,4 @@
+package hit.co.il;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -5,8 +6,13 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+
+import hit.co.il.Enums.eProductType;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -52,6 +58,8 @@ public class Model{
 	static long fileSize;
 	static int userChose;
 	static SingletonReception mySingleton;
+	
+	private ProductsHash productsCollection = new ProductsHash();
     
     /*********************************************************************************************************************************************/
     public int userDecision()
@@ -406,6 +414,270 @@ public class Model{
 	}
 	
 	/*********************************************************************************************************************************************/
+
+	public void GuestReservation(SingletonReception control) 
+		{
+
+			
+
+				boolean userWantToExit = false;
+				String firstMenuChosen;
+				do
+				{
+					firstMenuChosen = firstMenu();
+					ClearScreen();
+					switch (firstMenuChosen)
+					{
+						case "1":
+							insertNewProduct();
+							break;
+						case "2":
+							showListOfProductsByType();
+							break;
+						case "3":
+							changeAmountOfProduct();
+							break;
+						case "4":
+							showCompleteDataOfProduct();
+							break;
+
+						case "8":
+							userWantToExit = true;
+							break;
+					}
+				} while (userWantToExit == false);
+			}
+
+
+			private void showCompleteDataOfProduct()
+			{
+				int catalogNumber;
+				catalogNumber = askFromeUserCatalogNum();
+				if (productsCollection.IsProductExist(catalogNumber))
+				{
+					System.out.printf("%1$s - full  details:" + "\r\n", catalogNumber);
+					System.out.println(productsCollection.ShowProductDetails(catalogNumber));
+				}
+				else
+				{
+					System.out.println("There is no such product");
+				}
+			}
+
+			public void changeAmountOfProduct()
+			{
+				int catalogNum;
+				catalogNum = askFromeUserCatalogNum();
+				if (productsCollection.IsProductExist(catalogNum))
+				{
+					try
+					{
+						int amountToAdd = askFromUserToChooseAndCheckHim("What the amount you want to add?", 1, Integer.MAX_VALUE);
+						productsCollection.changeAmount(productsCollection.GetProduct(catalogNum).getProductQuantity() + amountToAdd, catalogNum);
+						System.out.printf("product - %1$s, amount was changed to %2$s." + "\r\n", catalogNum, productsCollection.GetProduct(catalogNum).getProductQuantity());
+					}
+					catch (IllegalArgumentException ex)
+					{
+						System.out.println(ex.getMessage());
+					}
+				}
+				else
+				{
+					System.out.println("There is no such product");
+				}
+			}
+
+			public void showListOfProductsByType()
+			{
+				ArrayList<Product> cooshenTypeProduct;
+				eProductType enumSelectedCondition;
+				enumSelectedCondition = askFromeUserProductType();
+				cooshenTypeProduct = productsCollection.GetListOfProducts(enumSelectedCondition);
+				System.out.printf("List of "+ enumSelectedCondition.toString() +"\r\n", enumSelectedCondition);
+
+				for (Product product : cooshenTypeProduct)
+				{
+					//can also add catalog number and minimum amount..
+					System.out.println(product.getProductName() + " , currently amount - " + product.getProductQuantity());
+				}
+			}
+
+			private eProductType askFromeUserProductType()
+			{
+				eProductType productType;
+//int s = enumAskAndUserSelection(eProductType.class, "What is the product type?") ;
+//eProductType eTest = eProductType.values()[s];
+
+				productType =  eProductType.valueOf(enumAskAndUserSelection(eProductType.class, "What is the product type?") );
+				return productType;
+			}
+
+			private void insertNewProduct()
+			{
+				//eProductType enumProductType;
+				int productCatalogNum;
+				eProductType productType;
+				Product product;
+				try
+				{
+					//need to do check for user input
+					productCatalogNum = (int)askFromeUserCatalogNum();
+					if (productsCollection.IsProductExist(productCatalogNum))
+					{
+						System.out.println("this product is already exist");
+					}
+					else
+					{
+						//get from user type of product to insert
+						productType = eProductType.valueOf( enumAskAndUserSelection(eProductType.class, "What kind of product ? "));  
+								//eProductType.values()[ enumAskAndUserSelection(eProductType.class, "What kind of product ? ")];
+
+						productsCollection.InsertNewProductModel(productType, productCatalogNum);
+						product = productsCollection.GetProduct(productCatalogNum);
+						askForUniqueProperties(product);
+						System.out.println("Product has been added successfully");
+					}
+				}
+				catch (RuntimeException ex)
+				{
+					System.out.println(ex.getMessage());
+				}
+			}
+
+			//private int enumAskAndUserSelection<TEnum>(string i_StringToPrint) where TEnum : struct, IConvertible
+			private <E extends Enum<E>> int enumAskAndUserSelection (Class<E> enumType, String stringToPrint)
+			{
+		        int i;
+		        System.out.println(stringToPrint);
+		        i = 1;
+		        for (E en : EnumSet.allOf(enumType))
+		        {
+		        	System.out.println(i + ". " + en);
+		            i++;
+		        }
+
+		        return askFromUserToChooseAndCheckHim(1, enumType.getEnumConstants().length);
+			}
+
+			private void askForUniqueProperties(Product product)
+			{
+				boolean goodInput;
+				int indexToSet = 1;
+				String userInput;
+				java.lang.Iterable<String> productProperties = product.GetProductProperties();
+
+				for (String uniqueFeature : productProperties)
+				{
+					do
+					{
+						System.out.printf("%1$s" + "\r\n", uniqueFeature);
+						userInput = new Scanner(System.in).nextLine();
+						goodInput = product.SetProductProperties(userInput, indexToSet);
+						if (goodInput)
+						{
+							indexToSet++;
+						}
+						else
+						{
+							System.out.println("Bad input, try again...");
+						}
+					} while (!goodInput);
+				}
+			}
+
+			private static int askFromeUserCatalogNum()
+			 {
+						System.out.println("Please enter product catalog number");
+						// need to check user input(check if int - you can use tryParse)
+						return Integer.parseInt(new Scanner(System.in).nextLine());
+			 }
+
+			private  String firstMenu()
+				{
+						String firstMenu = "Dear User, Which of the following operations would you like to make?" + "\r\n" + 
+			"\r\n" + 
+			"1. Insert a new product" + "\r\n" + 
+			"\r\n" + 
+			"2. Show list of products by type" + "\r\n" + 
+			"\r\n" + 
+			"3. Add the amount of a product" + "\r\n" + 
+			"\r\n" + 
+			"4. Show complete data of product" + "\r\n" + 
+			"\r\n" + 
+			"\r\n" + 
+			"8. Exit";
+						return String.valueOf(askFromUserToChooseAndCheckHim(firstMenu, 1, 8));
+					}
+
+					private int askFromUserToChooseAndCheckHim(String i_StringToPrint, int i_From, int i_To)
+					{
+						boolean validTryParse;
+						int intMenuChosen;
+						String stringMenuChosen;
+						boolean validInput = true;
+
+						do
+						{
+							System.out.println(i_StringToPrint);
+							if (validInput == false)
+							{
+								System.out.printf("wrong...please choose again (%1$s-%2$s)" + "\r\n", i_From, i_To);
+							}
+
+							stringMenuChosen = new Scanner(System.in).nextLine();
+							tangible.OutObject<Integer> tempOut_intMenuChosen = new tangible.OutObject<Integer>();
+							validTryParse = tangible.TryParseHelper.tryParseInt(stringMenuChosen, tempOut_intMenuChosen);
+							intMenuChosen = tempOut_intMenuChosen.outArgValue;
+							if (intMenuChosen <= i_To && intMenuChosen >= i_From && validTryParse)
+							{
+								validInput = true;
+							}
+							else
+							{
+								validInput = false;
+							}
+						} while (!validInput);
+
+						return intMenuChosen;
+					}
+
+					private int askFromUserToChooseAndCheckHim(int i_From, int i_To)
+					{
+						boolean validTryParse;
+						int intMenuChosen;
+						String stringMenuChosen;
+						boolean validInput = true;
+						do
+						{
+							if (validInput == false)
+							{
+								System.out.printf("wrong...please choose again " + "\r\n", i_From, i_To);
+							}
+
+							stringMenuChosen = new Scanner(System.in).nextLine();
+							//tangible.OutObject<Integer> tempOut_intMenuChosen = new tangible.OutObject<Integer>();
+							//validTryParse = tangible.TryParseHelper.tryParseInt(stringMenuChosen, tempOut_intMenuChosen);
+							try {
+								intMenuChosen = Integer.parseInt(stringMenuChosen);
+							}
+							catch (NumberFormatException e)
+							{
+							   intMenuChosen = -1;
+							}
+							if (intMenuChosen != -1 && intMenuChosen <= i_To && intMenuChosen >= i_From)
+							{
+								validInput = true;
+							}
+							else
+							{
+								validInput = false;
+							}
+						} while (!validInput);
+
+						return intMenuChosen;
+					}
+
+
 	/*********************************************************************************************************************************************/
 	   public static Guest createGuest() {
    	  	Guest guest = new Guest();	

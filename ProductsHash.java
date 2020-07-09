@@ -15,7 +15,7 @@ public class ProductsHash
 	}
 
 	/**********************************MEDICAL********************************************/
-	//Χ‘Χ“Χ™Χ§Χ” ΧΧ Χ”ΧΧ™Χ‘Χ¨ Χ”Χ¨ΧΧ©Χ•Χ Χ¨Χ™Χ§
+	//αγιχδ ΰν δΰιαψ δψΰωεο ψιχ
 	public final boolean isEmpty()
 	{
 		return (productHashMap == null || (new Integer(productHashMap.size())).equals(0));
@@ -92,6 +92,8 @@ public class ProductsHash
 		for (Product product : productHashMap.values())
 		{
 			//this will not work.. need corretion while debug
+			String s = product.getClass().getSimpleName();
+			String k = productType.toString();
 			if (product.getClass().getSimpleName().equals(productType.toString()))
 			{
 				toReturn.add(product);

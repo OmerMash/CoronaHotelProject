@@ -1,6 +1,9 @@
 package hit.co.il;
 import java.util.*;
 
+import tangible.OutObject;
+import tangible.TryParseHelper;
+
 
 public class Administration extends Product
 {
@@ -34,16 +37,16 @@ public class Administration extends Product
 		return productProperties;
 	}
 
-	public boolean SetProductProperties(String userInput, int i_IndexToSet)
+	public boolean SetProductProperties(String userInput, int indexToSet)
 	{
-		if (i_IndexToSet >= 1 && i_IndexToSet <= baseAmountOfProperties)
+		if (indexToSet >= 1 && indexToSet <= baseAmountOfProperties)
 		{
-			return super.SetProductProperties(userInput, i_IndexToSet);
+			return super.SetProductProperties(userInput, indexToSet);
 		}
 
 		boolean goodInput = false;
 		int integerInput;
-		switch (i_IndexToSet)
+		switch (indexToSet)
 		{
 			case baseAmountOfProperties + 1:
 				tangible.OutObject<Integer> tempOut_integerInput = new tangible.OutObject<Integer>();

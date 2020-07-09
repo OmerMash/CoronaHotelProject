@@ -1,8 +1,8 @@
-
-public class SingletonReception{
+package hit.co.il;
+public class SingletonReception
+{
 
 	static SingletonReception mySingleton;
-	
 	
 	private SingletonReception() {}
 	
@@ -33,6 +33,8 @@ public class SingletonReception{
         		System.out.println("\nEnter your choice :\n1.Check-In \n2.Check-Out \n3.Order to room\n4.Exit\n");
         	
         	action = Model.input.nextInt();
+        	
+        	Model model = new Model();
         	// associate user actions to the right flow when logged in to the system
         	switch(action)
         	{
@@ -41,7 +43,9 @@ public class SingletonReception{
         		Model.CheckIn(control);
         		break;
         	//check out
-        	//guest
+        	case 3:
+        		model.GuestReservation(control);
+        		break;
         	//rooms
         	
         	}
