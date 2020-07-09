@@ -123,9 +123,11 @@ public class Model{
                 return false;
                 
             } catch (IOException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -171,6 +173,7 @@ public class Model{
 		} 
  	   
  	   catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 		}
  	   return 1;
@@ -214,6 +217,7 @@ public class Model{
 		} 
  	   
  	   catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 		}
  	   return 1;
@@ -451,12 +455,12 @@ public class Model{
 				catalogNumber = askFromeUserCatalogNum();
 				if (productsCollection.IsProductExist(catalogNumber))
 				{
-					System.out.printf("{0} - full  details:" + "\r\n", catalogNumber);
+					System.out.printf("%1$s - full  details:" + "\r\n", catalogNumber);
 					System.out.println(productsCollection.ShowProductDetails(catalogNumber));
 				}
 				else
 				{
-					System.out.println("There is no such product...");
+					System.out.println("There is no such product");
 				}
 			}
 
@@ -470,7 +474,7 @@ public class Model{
 					{
 						int amountToAdd = askFromUserToChooseAndCheckHim("What the amount you want to add?", 1, Integer.MAX_VALUE);
 						productsCollection.changeAmount(productsCollection.GetProduct(catalogNum).getProductQuantity() + amountToAdd, catalogNum);
-						System.out.printf("product - {0}, amount was changed to {1}." + "\r\n", catalogNum, productsCollection.GetProduct(catalogNum).getProductQuantity());
+						System.out.printf("product - %1$s, amount was changed to %2$s." + "\r\n", catalogNum, productsCollection.GetProduct(catalogNum).getProductQuantity());
 					}
 					catch (IllegalArgumentException ex)
 					{
@@ -479,7 +483,7 @@ public class Model{
 				}
 				else
 				{
-					System.out.println("There is no such product...");
+					System.out.println("There is no such product");
 				}
 			}
 
@@ -501,6 +505,8 @@ public class Model{
 			private eProductType askFromeUserProductType()
 			{
 				eProductType productType;
+
+
 				productType =  eProductType.valueOf(enumAskAndUserSelection(eProductType.class, "What is the product type?") );
 				return productType;
 			}
@@ -517,16 +523,18 @@ public class Model{
 					productCatalogNum = (int)askFromeUserCatalogNum();
 					if (productsCollection.IsProductExist(productCatalogNum))
 					{
-						System.out.println("This product is already exist.");
+						System.out.println("this product is already exist");
 					}
 					else
 					{
 						//get from user type of product to insert
 						productType = eProductType.valueOf( enumAskAndUserSelection(eProductType.class, "What kind of product ? "));  
+								//eProductType.values()[ enumAskAndUserSelection(eProductType.class, "What kind of product ? ")];
+
 						productsCollection.InsertNewProductModel(productType, productCatalogNum);
 						product = productsCollection.GetProduct(productCatalogNum);
 						askForUniqueProperties(product);
-						System.out.println("Product has been added successfully!");
+						System.out.println("Product has been added successfully");
 					}
 				}
 				catch (RuntimeException ex)
@@ -534,6 +542,8 @@ public class Model{
 					System.out.println(ex.getMessage());
 				}
 			}
+
+		
 			private <E extends Enum<E>> int enumAskAndUserSelection (Class<E> enumType, String stringToPrint)
 			{
 		        int i;
@@ -541,7 +551,7 @@ public class Model{
 		        i = 1;
 		        for (E en : EnumSet.allOf(enumType))
 		        {
-		        	System.out.println(i + "{0}. {1}" + en);
+		        	System.out.println(i + ". " + en);
 		            i++;
 		        }
 
@@ -559,7 +569,7 @@ public class Model{
 				{
 					do
 					{
-						System.out.printf("{0}" + "\r\n", uniqueFeature);
+						System.out.printf("%1$s" + "\r\n", uniqueFeature);
 						userInput = new Scanner(System.in).nextLine();
 						goodInput = product.SetProductProperties(userInput, indexToSet);
 						if (goodInput)
@@ -576,7 +586,7 @@ public class Model{
 
 			private static int askFromeUserCatalogNum()
 			 {
-						System.out.println("Please enter product catalog number:");
+						System.out.println("Please enter product catalog number");
 						// need to check user input(check if int - you can use tryParse)
 						return Integer.parseInt(new Scanner(System.in).nextLine());
 			 }
@@ -594,7 +604,7 @@ public class Model{
 			"4. Show complete data of product" + "\r\n" + 
 			"\r\n" + 
 			"\r\n" + 
-			"8. Back to the main menu ";
+			"8. Back to the main menu";
 						return String.valueOf(askFromUserToChooseAndCheckHim(firstMenu, 1, 8));
 					}
 
@@ -610,7 +620,7 @@ public class Model{
 							System.out.println(i_StringToPrint);
 							if (validInput == false)
 							{
-								System.out.printf("wrong...please choose again ({0}-{1})" + "\r\n", i_From, i_To);
+								System.out.printf("wrong...please choose again (%1$s-%2$s)" + "\r\n", i_From, i_To);
 							}
 
 							stringMenuChosen = new Scanner(System.in).nextLine();
@@ -640,7 +650,7 @@ public class Model{
 						{
 							if (validInput == false)
 							{
-								System.out.printf("wrong...please choose again ({0}-{1})" + "\r\n", i_From, i_To);
+								System.out.printf("wrong...please choose again " + "\r\n", i_From, i_To);
 							}
 
 							stringMenuChosen = new Scanner(System.in).nextLine();
@@ -665,6 +675,7 @@ public class Model{
 
 						return intMenuChosen;
 					}
+
 
 
 	/*********************************************************************************************************************************************/
