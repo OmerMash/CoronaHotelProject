@@ -411,7 +411,7 @@ public class Model{
 	
 	/*********************************************************************************************************************************************/
 
-	public void GuestReservation(SingletonReception control) 
+	public void RoomReservation(SingletonReception control) 
 		{
 
 			
@@ -594,7 +594,7 @@ public class Model{
 			"4. Show complete data of product" + "\r\n" + 
 			"\r\n" + 
 			"\r\n" + 
-			"8. Exit";
+			"8. Back to the main menu ";
 						return String.valueOf(askFromUserToChooseAndCheckHim(firstMenu, 1, 8));
 					}
 
