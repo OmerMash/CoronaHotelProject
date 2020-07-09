@@ -22,13 +22,13 @@ public class Medical extends Product
 	public void PrintProduct()
 	{
 		super.PrintProduct();
-		System.out.println(", expiration Date :" + expirationDate);
+		System.out.println(", Expiration Date :" + expirationDate);
 
 	}
 
 	public String toString()
 	{
-		return super.toString() + ", expiration Date :" + expirationDate;
+		return super.toString() + ", Expiration Date :" + expirationDate;
 
 	}
 

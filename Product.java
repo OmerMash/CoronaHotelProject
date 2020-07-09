@@ -1,5 +1,6 @@
 package hit.co.il;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import tangible.OutObject;
 import tangible.TryParseHelper;
@@ -46,12 +47,12 @@ public abstract class Product
 
 	public void PrintProduct()
 	{
-		System.out.println("name :" + productName + " , quantity=" + productQuantity + " , minimum quantity=" + minimumQuantity + " , catalog number : " + productCatalogNum);
+		System.out.println("Name :" + productName + " , Quantity=" + productQuantity + " , Minimum quantity=" + minimumQuantity + " , Catalog number : " + productCatalogNum);
 	}
 
 	public String toString()
 	{
-		return ("name :" + productName + " , quantity=" + productQuantity + " , minimum quantity=" + minimumQuantity + " , catalog number : " + productCatalogNum);
+		return ("Name :" + productName + " , Quantity=" + productQuantity + " , Minimum quantity=" + minimumQuantity + " , Catalog number : " + productCatalogNum);
 	}
 	/***********************************************************************************/
 
@@ -60,8 +61,8 @@ public abstract class Product
 		ArrayList<String> productProperties = new ArrayList<String>();
 
 		productProperties.add(("What is the product name?")); //1 (first question)
-		productProperties.add(("What is the product current Quantity")); //2
-		productProperties.add(("What is the product minimum Quantity")); //3
+		productProperties.add(("What is the product current quantity?")); //2
+		productProperties.add(("What is the product minimum quantity?")); //3
 
 		return productProperties;
 	}
@@ -93,12 +94,11 @@ public abstract class Product
 				}
 
 				break;
-			//amountOfProperties must be the last, needs change when adding more properties 
-			//created for loosly couple between son and base
+
 			case baseAmountOfProperties:
 				tangible.OutObject<Integer> tempOut_integerInput2 = new tangible.OutObject<Integer>();
 				goodInput = tangible.TryParseHelper.tryParseInt(userInput, tempOut_integerInput2);
-			integerInput = tempOut_integerInput2.outArgValue;
+			    integerInput = tempOut_integerInput2.outArgValue;
 				if (goodInput && integerInput >= 0)
 				{
 					minimumQuantity = integerInput;

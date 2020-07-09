@@ -4,9 +4,9 @@ import java.util.*;
 public class Food extends Product
 {
 
-	private String expirationDate; //בת חן הייתי ממליץ לך להשתמש במחלקה שיודעת לבצע מניפולציות על תאריך (Date)
+	private String expirationDate;
 	private String kosherType;
-	private String dietType;
+	private String vegetarianOrNot;
 
 	public Food(int productCatalogNum)
 	{
@@ -17,12 +17,12 @@ public class Food extends Product
 	public final void printFoodObject()
 	{
 		super.PrintProduct();
-		System.out.println(" , expiration Date :" + expirationDate + " , kosher type: " + kosherType + " , diet type :" + dietType);
+		System.out.println(" , Expiration Date :" + expirationDate + " , Kosher type: " + kosherType + " , Vegetarian or not :" + vegetarianOrNot);
 	}
 
 	public String toString()
 	{
-		return super.toString() + " , expiration Date :" + expirationDate + " , kosher type : " + kosherType + " , diet type :" + dietType;
+		return super.toString() + " , Expiration Date :" + expirationDate + " , Kosher type : " + kosherType + " , Vegetarian or not :" + vegetarianOrNot;
 	}
 	
 	public ArrayList<String> GetProductProperties()
@@ -31,7 +31,7 @@ public class Food extends Product
 
 		productProperties.add(("What is the food product expirationDate?"));
 		productProperties.add(("What is the food product kosher type?"));
-		productProperties.add(("What is the food product expirationDate?"));
+		productProperties.add(("Do this food product is vegetarian?(Yes/No)"));
 
 		return productProperties;
 	}
@@ -58,7 +58,7 @@ public class Food extends Product
 
 				break;
 			case baseAmountOfProperties + 3:
-				this.dietType = userInput;
+				this.vegetarianOrNot = userInput;
 				goodInput = true;
 
 				break;
