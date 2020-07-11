@@ -50,7 +50,6 @@ public class Medical extends Product
 		}
 
 		boolean goodInput = false;
-		int integerInput;
 		switch (i_IndexToSet)
 		{
 			case baseAmountOfProperties + 1:

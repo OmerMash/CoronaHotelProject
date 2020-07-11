@@ -1,5 +1,4 @@
 package hit.co.il;
-
 import hit.co.il.Enums.eProductType;
 
 public class ProductFactory

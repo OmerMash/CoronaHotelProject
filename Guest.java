@@ -1,7 +1,8 @@
+package hit.co.il;
 import java.util.Scanner;
 
 public class Guest{
-	
+
 	//Variables
     protected static int guestCount=0;
     protected int numOfGuestsToCheckIn;
@@ -13,14 +14,14 @@ public class Guest{
     protected int Religious;
 	public static Scanner input = new Scanner(System.in);	
 
-    
+
     //Methods
     //Ctor
     public Guest()
     {
     	guestCount++;
     }    
-    
+
     public static int guestCounter() {
         return guestCount;
     }  
@@ -43,4 +44,3 @@ public class Guest{
     	}
     }
  }
-

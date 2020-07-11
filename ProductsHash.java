@@ -13,9 +13,7 @@ public class ProductsHash
 	{
 		productHashMap = new HashMap<Integer, Product>();
 	}
-
-	/**********************************MEDICAL********************************************/
-	//בדיקה אם האיבר הראשון ריק
+//**************************************************************************************************************
 	public final boolean isEmpty()
 	{
 		return (productHashMap == null || (new Integer(productHashMap.size())).equals(0));
@@ -33,7 +31,7 @@ public class ProductsHash
 		productHashMap.put(productCatalogNum, newProductToAdd);
 	}
 
-	public final void update(int key, Product value)
+	public void update(int key, Product value)
 	{
 		if (!productHashMap.containsKey(key))
 		{
@@ -84,14 +82,13 @@ public class ProductsHash
 		return productHashMap.get(catalogNum).toString();
 	}
 
-	public final ArrayList<Product> GetListOfProducts(eProductType productType)
+	public ArrayList<Product> GetListOfProducts(eProductType productType)
 	{
 		//StringBuilder listOfLicensePlateNumbers = new StringBuilder();
 		ArrayList<Product> toReturn = new ArrayList<Product>();
 
 		for (Product product : productHashMap.values())
 		{
-			//this will not work.. need corretion while debug
 			String s = product.getClass().getSimpleName();
 			String k = productType.toString();
 			if (product.getClass().getSimpleName().equals(productType.toString()))
@@ -103,7 +100,7 @@ public class ProductsHash
 		return toReturn;
 	}
 
-	public final void changeAmount(int amountToSet, int catalogNum)
+	public void changeAmount(int amountToSet, int catalogNum)
 	{
 		if (productHashMap.containsKey(catalogNum))
 		{

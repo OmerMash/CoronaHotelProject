@@ -1,7 +1,6 @@
 package hit.co.il;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import tangible.OutObject;
 import tangible.TryParseHelper;
 
@@ -94,7 +93,8 @@ public abstract class Product
 				}
 
 				break;
-
+				
+				//created for loosely couple between son and base
 			case baseAmountOfProperties:
 				tangible.OutObject<Integer> tempOut_integerInput2 = new tangible.OutObject<Integer>();
 				goodInput = tangible.TryParseHelper.tryParseInt(userInput, tempOut_integerInput2);
