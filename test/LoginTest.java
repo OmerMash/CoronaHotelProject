@@ -20,23 +20,31 @@ class LoginTest {
 	// AfterAll- THIS ONE WILL RUN AFTER ALL TEST
 	@Test
 	public void loginFailedWhenUsernameIsEmpty() {
+		SetUp();
+		loginController.CreateAccessFile();
 		boolean RetValue = loginController.StringFinder(" ,123.", loginController.file.getAbsolutePath());
-		Assertions.assertTrue(RetValue, "The Login passed but should fail");
+		Assertions.assertFalse(RetValue, "The Login passed but should fail");
 	}
 
 	@Test
 	public void loginFailedWhenPasswordIsEmpty() {
+		SetUp();
+		loginController.CreateAccessFile();
 		boolean RetValue = loginController.StringFinder("123, .", loginController.file.getAbsolutePath());
-		Assertions.assertTrue(RetValue, "The Login passed but should fail");
+		Assertions.assertFalse(RetValue, "The Login passed but should fail");
 	}
 	@Test
 	public void loginSucceededWhenUserExists() {
+		SetUp();
+		loginController.CreateAccessFile();
 		boolean RetValue = loginController.StringFinder("ori,1234.", loginController.file.getAbsolutePath());
 		Assertions.assertTrue(RetValue, "The Login Succeeded!");
 	}
 	@Test
 	public void loginFailedWhenUserNotExists() {
+		SetUp();
+		loginController.CreateAccessFile();
 		boolean RetValue = loginController.StringFinder("ori,123.", loginController.file.getAbsolutePath());
-		Assertions.assertTrue(RetValue, "The Login passed but should fail");
+		Assertions.assertFalse(RetValue, "The Login passed but should fail");
 	}
 }
