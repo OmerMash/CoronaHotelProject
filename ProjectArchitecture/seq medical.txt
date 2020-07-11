@@ -1,0 +1,27 @@
+title inventory of medical supply
+
+actor user
+participant reception
+participant medical
+participant ProductsHash
+
+
+
+user->reception:insert_a _new_product
+reception-->user:Please enter product catalog number
+user->reception:type catalog number
+reception->ProductsHash:scan hash table
+
+
+alt if the catalog number is already exist
+ProductsHash-->reception:this product is already exist
+reception->user:this product already exists
+end
+
+medical->reception:asks for data for the object variables
+reception->user:please provide data for the object variables
+user-->reception:user provide data fo the object
+reception->medical:input data
+medical->ProductsHash:create new object in the hash table
+reception->user:Product has been added successfully
+
